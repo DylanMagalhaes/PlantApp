@@ -55,6 +55,7 @@ fun AppContent(modifier: Modifier, vm: PlantViewModel = viewModel()) {
             is PlantUiState.Loading -> LoadingView()
             is PlantUiState.Error -> ErrorView(error = (vm.plantState as PlantUiState.Error).error)
             is PlantUiState.Success -> PlantCard(result = (vm.plantState as PlantUiState.Success).search)
+
         }
     }
 }
