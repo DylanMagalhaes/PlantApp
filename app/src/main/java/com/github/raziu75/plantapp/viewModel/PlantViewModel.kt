@@ -6,8 +6,10 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.github.raziu75.plantapp.data.PlantAPI
+import com.github.raziu75.plantapp.model.APIResults
 import com.github.raziu75.plantapp.ui.uiState.PlantUiState
-import kotlinx.coroutines.delay
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import java.io.IOException
@@ -17,7 +19,7 @@ class PlantViewModel : ViewModel() {
     var plantName: String by mutableStateOf("")
 
     //Etat de l'appel API
-    var plantUiState: PlantUiState by mutableStateOf(PlantUiState.Loading)
+    var plantState: PlantUiState by mutableStateOf(PlantUiState.Loading)
 
 
     fun updateTextFieldValue(text: String) {
@@ -27,18 +29,23 @@ class PlantViewModel : ViewModel() {
     fun launchAPI() {
         //lancement de coroutine avec PlantService
         viewModelScope.launch {
-            plantUiState = try {
+            plantState = try {
                 val result = PlantAPI.service.getPlant(q = plantName)
-                PlantUiState.Success(search = result)
+                println(result)
+                PlantUiState.Success(search = convertDatas(result))
 
-            } catch (iO: IOException){
-                println(iO.message)
-                PlantUiState.Error
+            } catch (iO: IOException) {
+                PlantUiState.Error(error = iO.message?: "")
 
-            } catch (http: HttpException){
-                println(http.message)
-                PlantUiState.Error
+            } catch (http: HttpException) {
+                PlantUiState.Error(error = http.message?: "")
             }
         }
+    }
+
+    fun convertDatas(string: String): APIResults {
+        val gson = Gson()
+        val type = object : TypeToken<APIResults>() {}.type
+        return gson.fromJson(string, type)
     }
 }

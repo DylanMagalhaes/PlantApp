@@ -8,7 +8,6 @@ import androidx.compose.ui.Modifier
 @Composable
 fun AppScaffold() {
     Scaffold(
-        topBar = { Appbar()},
-        content = { AppContent(modifier = Modifier.padding(it)) }
-    )
+        topBar = { Appbar() },
+        content = { AppContent(modifier = Modifier.padding(it)) })
 }

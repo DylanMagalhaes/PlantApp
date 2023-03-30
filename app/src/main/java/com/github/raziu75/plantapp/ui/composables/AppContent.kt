@@ -18,6 +18,7 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.github.raziu75.plantapp.model.APIResults
 import com.github.raziu75.plantapp.ui.uiState.PlantUiState
 import com.github.raziu75.plantapp.viewModel.PlantViewModel
 
@@ -50,10 +51,10 @@ fun AppContent(modifier: Modifier, vm: PlantViewModel = viewModel()) {
             }
         )
 
-        when (vm.plantUiState) {
+        when (vm.plantState) {
             is PlantUiState.Loading -> LoadingView()
-            is PlantUiState.Error -> Text(text = "ERREUR SURVENU")//ErrorView(error = (vm.plantUiState as PlantUiState.Error).error)
-            is PlantUiState.Success -> Text(text = (vm.plantUiState as PlantUiState.Success).search)//ForecastView(results = (vm.plantUiState as PlantUiState.Success).search)
+            is PlantUiState.Error -> ErrorView(error = (vm.plantState as PlantUiState.Error).error)
+            is PlantUiState.Success -> PlantCard(result = (vm.plantState as PlantUiState.Success).search)
         }
     }
 }

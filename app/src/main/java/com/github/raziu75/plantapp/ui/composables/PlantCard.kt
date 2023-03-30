@@ -1,6 +1,6 @@
 package com.github.raziu75.plantapp.ui.composables
 
-import androidx.compose.foundation.BorderStroke
+
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
@@ -11,9 +11,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
+import com.github.raziu75.plantapp.model.APIResults
+
 
 @Composable
-fun PlantCard() {
+fun PlantCard(result: APIResults) {
 
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -35,12 +37,12 @@ fun PlantCard() {
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier.padding(8.dp)
             ) {
-                Text(text = "Coconut", style = MaterialTheme.typography.h3)
+                result.data[0].commonName?.let { Text(text = it, style = MaterialTheme.typography.h3) }
 
                 Image(
                     modifier = Modifier
                         .size(100.dp),
-                    painter = rememberAsyncImagePainter(""),
+                    painter = rememberAsyncImagePainter({result.data[0].imageUrl}),
                     contentDescription = null
                 )
                 Column(
@@ -49,7 +51,7 @@ fun PlantCard() {
                     horizontalAlignment = Alignment.Start
                 ) {
                     Text(
-                        text = "Famille:",
+                        text = "Famille: ${result.data[0].family}",
                         style = androidx.compose.material3.MaterialTheme.typography.titleLarge,
                         )
 
@@ -58,7 +60,7 @@ fun PlantCard() {
                     )
 
                     Text(
-                        text = "Genre:",
+                        text = "Genre: ${result.data[0].genus}",
                         style = androidx.compose.material3.MaterialTheme.typography.titleLarge
                         )
                 }
