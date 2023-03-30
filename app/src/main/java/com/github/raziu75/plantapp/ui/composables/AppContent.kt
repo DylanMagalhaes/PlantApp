@@ -51,9 +51,9 @@ fun AppContent(modifier: Modifier, vm: PlantViewModel = viewModel()) {
         )
 
         when (vm.plantUiState) {
-            is PlantUiState.Loading -> LoadingView()
-            is PlantUiState.Error -> Text(text = "ERREUR SURVENU")//ErrorView(error = (vm.plantUiState as PlantUiState.Error).error)
-            is PlantUiState.Success -> Text(text = (vm.plantUiState as PlantUiState.Success).search)//ForecastView(results = (vm.plantUiState as PlantUiState.Success).search)
+            is PlantUiState.Loading -> Text(text = "En attente")
+            is PlantUiState.Error -> Text(text = "ERREUR SURVENU")
+            is PlantUiState.Success -> Text(text = (vm.plantUiState as PlantUiState.Success).search)
         }
     }
 }
